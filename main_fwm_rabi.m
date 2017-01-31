@@ -57,6 +57,15 @@ box_edge=cell(1,4);
 for i=1:4
     for j=1:3
         box_edge{i}{j}=box_cent{i}(j)+box_hwidth{i}(j)*[-1,1];  % edges from centre and hw
+        
+        % check if box in ROI (pre-filter window)
+        if (box_edge{i}{j}(1)<configs.window{j}(1))||...
+                (box_edge{i}{j}(2)>configs.window{j}(2))
+            warning('Data capture box is out of range of ROI window. Restricting box_edge to ROI window.');
+            % reset outlying box edges
+            box_edge{i}{j}(1)=max(box_edge{i}{j}(1),configs.window{j}(1));    % edge start
+            box_edge{i}{j}(2)=min(box_edge{i}{j}(2),configs.window{j}(2));    % edge end
+        end
     end
 end
 

@@ -5,9 +5,9 @@ clear all; close all;
 
 %%% USER INPUTS
 % Path to configuration file
-path_config='C:\Users\HE BEC\Documents\lab\stim_halo\FWM\mag_insensitive_pop_scan\config\config_310117.m';
+path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\config\config_310117.m';
 % Path to log file with Bragg amplitude
-path_log='C:\Users\HE BEC\Documents\lab\stim_halo\FWM\mag_insensitive_pop_scan\log_params.txt';
+path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\LOG_parameters.txt';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% Override params here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 verbose=2;
@@ -46,10 +46,10 @@ box_cent={...
     [2.831,2.968e-3,5.282e-3]...
     };      % centre of box - approx location scattered modes
 box_hwidth={...
-    [15e-4, 2e-3,   6e-3],...
-    [4e-3,  4e-3,   12e-3],...
-    [4e-3,  4e-3,   12e-3],...
-    [15e-4, 2e-3,   6e-3]...
+    [15e-3, 15e-3,   15e-3],...
+    [15e-3,  15e-3,   15e-3],...
+    [15e-3,  15e-3,   15e-3],...
+    [15e-3, 15e-3,   15e-3]...
     };      % half widths for box around scattered modes
 
 % create box edges
@@ -112,18 +112,41 @@ for i=1:nShot
 end
 
 %% Plot Bragg amplitude vs Mode population
+%%% All modes (±Q modes are saturated)
 h_pop_rabi_flop=figure();
 hold on;
 for i=1:4
     plot(bragg_amp,pop_scat_mode(:,i),'.');
 end
+xlim([min(bragg_amp),max(bragg_amp)]);
+legend_text={'3Q','Q','-Q (unscattered)','-3Q'};
+legend(legend_text);
 title('Population Rabi flopping');
 xlabel('Bragg beam amplitude [V]'); ylabel('Mode population');
+box on;
 
 % save plot
 fname_str='pop_rabi_flop';
 saveas(h_pop_rabi_flop,[configs.files.dirout,fname_str,'.fig']);
 saveas(h_pop_rabi_flop,[configs.files.dirout,fname_str,'.png']);
+
+%%% only ±3Q modes
+h_pop_rabi_flop_high_ord=figure();
+ind_high_ord=[1,4];
+hold on;
+for i=ind_high_ord
+    plot(bragg_amp,pop_scat_mode(:,i),'.');
+end
+xlim([min(bragg_amp),max(bragg_amp)]);
+legend(legend_text{ind_high_ord});
+title('Population Rabi flopping');
+xlabel('Bragg beam amplitude [V]'); ylabel('Mode population');
+box on;
+
+% save plot
+fname_str='pop_rabi_flop_high_ord';
+saveas(h_pop_rabi_flop_high_ord,[configs.files.dirout,fname_str,'.fig']);
+saveas(h_pop_rabi_flop_high_ord,[configs.files.dirout,fname_str,'.png']);
 
 %% Save data
 for i = 1:length(vars_save)

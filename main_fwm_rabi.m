@@ -111,7 +111,19 @@ for i=1:nShot
     end
 end
 
+%% Plot Bragg amplitude vs Mode population
+h_pop_rabi_flop=figure();
+hold on;
+for i=1:4
+    plot(bragg_amp,pop_scat_mode(:,i),'.');
+end
+title('Population Rabi flopping');
+xlabel('Bragg beam amplitude [V]'); ylabel('Mode population');
 
+% save plot
+fname_str='pop_rabi_flop';
+saveas(h_pop_rabi_flop,[configs.files.dirout,fname_str,'.fig']);
+saveas(h_pop_rabi_flop,[configs.files.dirout,fname_str,'.png']);
 
 %% Save data
 for i = 1:length(vars_save)

@@ -10,7 +10,7 @@ path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\config\config_3
 path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\LOG_parameters.txt';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% Override params here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-verbose=2;
+verbose=0;
 % for ii=1:3  % no crop
 %     configs.window{ii}=[];
 % end
@@ -100,7 +100,7 @@ saveas(h_scat_modes,[configs.files.dirout,fname_str,'.png']);
 %% Match shots with Bragg amplitude
 % exp_config.id/bragg_amp <==> files_out.id_ok
 % Create ordered file# to log index table
-exp_id=zeros(max(exp_config.id),1);
+exp_id=zeros(max(size(exp_config.id,1),max(files_out.id_ok)),1);
 for i=1:length(exp_config.id)
     exp_id(exp_config.id(i))=i-1;   % Log-file needs to be shifted by 1
 end

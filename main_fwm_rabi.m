@@ -5,16 +5,9 @@ clear all; close all;
 
 %%% USER INPUTS
 % Path to configuration file
-path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\config\config_310117.m';
+path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\config\config_010217.m';
 % Path to log file with Bragg amplitude
-path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m0_pop_scan\LOG_parameters.txt';
-
-%%%%%%%%%%%%%%%%%%%%%%%%%% Override params here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-verbose=0;
-% for ii=1:3  % no crop
-%     configs.window{ii}=[];
-% end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\LOG_parameters.txt';
 
 % vars to save to output
 vars_save={'path_config','path_log',...
@@ -39,18 +32,34 @@ exp_config=load_logfile(path_log);
 
 %% Capture coherently scattered orders
 % Prepare box capture range
+% mF=0
+% box_cent={...
+%     [2.791,2.693e-3,4.247e-3],...
+%     [2.804,2.748e-3,4.592e-3],...
+%     [2.817,2.913e-3,5.398e-3],...
+%     [2.831,2.968e-3,5.282e-3]...
+%     };      % centre of box - approx location scattered modes
+% box_hwidth={...
+%     [5e-3, 15e-3,   15e-3],...
+%     [5e-3,  15e-3,   15e-3],...
+%     [5e-3,  15e-3,   15e-3],...
+%     [5e-3, 15e-3,   15e-3]...
+%     };      % half widths for box around scattered modes
+
+% mF=1
 box_cent={...
-    [2.791,2.693e-3,4.247e-3],...
-    [2.804,2.748e-3,4.592e-3],...
-    [2.817,2.913e-3,5.398e-3],...
-    [2.831,2.968e-3,5.282e-3]...
+    [0.5905,    0,      0],...
+    [0.6025,    0,      0],...
+    [0.6155,    0,      0],...
+    [0.6295,    0,      0]...
     };      % centre of box - approx location scattered modes
 box_hwidth={...
-    [5e-3, 15e-3,   15e-3],...
-    [5e-3,  15e-3,   15e-3],...
-    [5e-3,  15e-3,   15e-3],...
-    [5e-3, 15e-3,   15e-3]...
+    [5e-3,  30e-3,   30e-3],...
+    [6e-3,  30e-3,   30e-3],...
+    [6e-3,  30e-3,   30e-3],...
+    [5e-3,  30e-3,   30e-3]...
     };      % half widths for box around scattered modes
+
 
 % create box edges
 box_edge=cell(1,4);
@@ -83,19 +92,21 @@ for i_shot=1:nShot
 end
 
 %%% Plot captured counts
-colors='rgbk';
-h_scat_modes=figure();
-hold on;
-for i=1:4
-    plot_zxy(txy_scat_mode(:,i),10,colors(i));
+if verbose>1
+    colors='rgbk';
+    h_scat_modes=figure();
+    hold on;
+    for i=1:4
+        plot_zxy(txy_scat_mode(:,i),10,colors(i));
+    end
+    title('Captured scattered modes');
+    xlabel('X [m]'); ylabel('Y [m]'); zlabel('T [s]');
+    
+    % save plot
+    fname_str='scat_modes';
+    saveas(h_scat_modes,[configs.files.dirout,fname_str,'.fig']);
+    saveas(h_scat_modes,[configs.files.dirout,fname_str,'.png']);
 end
-title('Captured scattered modes');
-xlabel('X [m]'); ylabel('Y [m]'); zlabel('T [s]');
-
-% save plot
-fname_str='scat_modes';
-saveas(h_scat_modes,[configs.files.dirout,fname_str,'.fig']);
-saveas(h_scat_modes,[configs.files.dirout,fname_str,'.png']);
 
 %% Match shots with Bragg amplitude
 % exp_config.id/bragg_amp <==> files_out.id_ok
@@ -161,5 +172,6 @@ for i = 1:length(vars_save)
         warning(['Variable "',vars_save{i},'" does not exist.']);
         continue;
     end
-    save(configs.files.saveddata,vars_save{i},'-v6','-append');     % -v6 version much faster (but no compression)?
+    %     save(configs.files.saveddata,vars_save{i},'-v6','-append');     % -v6 version much faster (but no compression)?
+    save(configs.files.saveddata,vars_save{i},'-append');     % to overcome version conflict
 end

@@ -4,10 +4,14 @@
 clear all; close all;
 
 %%% USER INPUTS
-% Path to configuration file
-path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\config\config_010217.m';
-% Path to log file with Bragg amplitude
-path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\LOG_parameters.txt';
+% Path to configuration files
+% mF=1
+path_config='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\config\config_010217.m';  % mf=1 pop scan data
+path_log='C:\Users\HE BEC\Documents\lab\stim_halo\m1_pop_scan3\LOG_parameters.txt';     % path to log file with bragg amp
+
+% mF=0
+%
+%
 
 % vars to save to output
 vars_save={'path_config','path_log',...

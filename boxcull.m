@@ -10,9 +10,12 @@
 %   * array_out     - array of vectors within box
 %   * ind_out       - indices of vectors (rows) in box
 %   * n_out         - number of points captured
+%   * cpos          - centre position (mean): [xc,yc,zc,...]
+%   * se_cpos       - standard error of mean position
+%   * sd_pos        - rms width of captured counts
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [array_out,ind_out,n_out] = boxcull(array_in,box_lim)
+function [array_out,ind_out,n_out,cpos,se_cpos,sd_pos] = boxcull(array_in,box_lim)
 nvects=size(array_in,1);
 ind_out=1:nvects;
 
@@ -28,6 +31,14 @@ for i=1:ndim
     ind_out=ind_out(in_window);             % update remaining data's parent indices
 end
 
+% evaluate number of captured counts
 n_out=size(array_out,1);
+
+% evaluate mean position of captured counts
+cpos=mean(array_out,1);
+
+% spread/width
+sd_pos=std(array_out,1);        % rms width in each dim
+se_cpos=sd_pos/sqrt(n_out);     % se
 
 end

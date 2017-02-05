@@ -5,13 +5,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INPUT
 %   * array_in      - N by M array (usage: N x data vectors of dim M)
-%   * box_lim       - 1xM cell array of box limits
+%   * box_lim       - 1xM cell array of box limits for each dim
 % OUTPUT
 %   * array_out     - array of vectors within box
 %   * ind_out       - indices of vectors (rows) in box
+%   * n_out         - number of points captured
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [array_out, ind_out] = boxcull(array_in,box_lim)
+function [array_out,ind_out,n_out] = boxcull(array_in,box_lim)
 nvects=size(array_in,1);
 ind_out=1:nvects;
 
@@ -23,8 +24,10 @@ for i=1:ndim
         continue;
     end
     in_window=((array_out(:,i)>box_lim{i}(1))&(array_out(:,i)<box_lim{i}(2)));
-    array_out=array_out(in_window,:);     % crop all remaining to this component
-    ind_out=ind_out(in_window);         % update remaining data's parent indices
+    array_out=array_out(in_window,:);       % crop all remaining to this component
+    ind_out=ind_out(in_window);             % update remaining data's parent indices
 end
+
+n_out=size(array_out,1);
 
 end

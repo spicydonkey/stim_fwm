@@ -11,7 +11,7 @@ cyl_dim=[cyl_rad,cyl_hgt];  % build cylinder dimensions
 
 cyl_orient=3;
 
-cyl_cent=[0,0,0];
+cyl_cent=[0.5,0.5,0.5];
 
 
 % call cylindercull

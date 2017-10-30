@@ -1,4 +1,4 @@
-% Prelim investigation to FWM in stim binary collision
+cl% Prelim investigation to FWM in stim binary collision
 % DKS 31/01/17
 
 clear all; close all;
@@ -32,7 +32,7 @@ nShot=size(TXY,1);
 
 % Prepare Bragg amplitude params
 % Load Bragg amplitude params from log file (experiment)
-exp_config=load_logfile(path_log);
+exp_config=loadLog(path_log);
 
 %% Capture coherently scattered orders
 % Prepare box capture range
